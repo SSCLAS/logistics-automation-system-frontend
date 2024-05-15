@@ -1,21 +1,27 @@
 <template>
-  <p class="footer-text">This is Footer.</p>
+  <v-footer class="bg-black-2">
+    <v-row justify="center" no-gutters>
+      <v-btn
+        v-for="link in links"
+        :key="link"
+        class="mx-2"
+        color="white"
+        rounded="xl"
+        variant="text"
+      >
+        {{ link }}
+      </v-btn>
+      <v-col class="text-center mt-4" cols="12">
+        {{ new Date().getFullYear() }} — <strong>SSC</strong>
+      </v-col>
+    </v-row>
+  </v-footer>
 </template>
 
 <script>
-// 스크립트 부분은 필요에 따라 추가적인 로직을 포함할 수 있습니다.
 export default {
-  // 컴포넌트 옵션
+  data: () => ({
+    links: ["About Us", "Team", "Services", "Blog", "Contact Us"],
+  }),
 };
 </script>
-
-<style scoped>
-/* 푸터 컴포넌트의 배경색을 흰색(#ffffff)으로 설정 */
-.footer-text {
-  background-color: #ffffff; /* 배경색을 흰색으로 설정 */
-  padding: 20px; /* 내부 여백 설정 */
-  color: #000000;
-  justify-content: center;
-  display: flex;
-}
-</style>

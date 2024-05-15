@@ -1,56 +1,51 @@
 <template>
-  <v-container>
-    <div>
-      <div>
-        <div class="text-h5">로봇 현황</div>
-
-        <v-data-table-server class="table table-striped">
-          <thead :style="{ backgroundColor: '#343a40', color: 'white' }">
-            <tr>
-              <th>로봇이름</th>
-              <th>로봇 활성화</th>
-            </tr>
-          </thead>
-          <draggable v-model="robots" tag="tbody" item-key="id">
-            <template #item="{ element }">
-              <tr>
-                <td>{{ element.robot_name }}</td>
-                <td>{{ element.robot_status ? "O" : "X" }}</td>
-              </tr>
-            </template>
-          </draggable>
-        </v-data-table-server>
-      </div>
-      <rawDisplayer :value="list" title="List" />
-    </div>
-  </v-container>
+  <div>
+    <TableComponent
+      :items="pageOneData"
+      :headers="pageOneHeaders"
+      title="로봇 현황"
+    />
+  </div>
 </template>
 
-<script lang="ts" setup>
-import draggable from "vuedraggable";
-import { ref } from "vue";
+<script>
+import axios from "axios";
+import TableComponent from "../components/table.vue";
+import { ref, onMounted } from "vue";
 
-const robots = ref([]);
+export default {
+  components: {
+    TableComponent,
+  },
+  setup() {
+    const pageOneData = ref([]);
+    const pageOneHeaders = ref([
+      { text: "로봇 이름", value: "robot_name" },
+      { text: "로봇 활성화 여부", value: "robot_status" },
+    ]);
 
-const URL1 = "http://127.0.0.1:8000/Robot/";
+    const fetchData = async () => {
+      try {
+        const [robotResponse] = await Promise.all([
+          axios.get("http://127.0.0.1:8000/Robot/"),
+        ]);
+        const robots = robotResponse.data;
 
-fetch(URL1)
-  .then((res) => res.json())
-  .then((json) => (robots.value = json));
+        pageOneData.value = robots.map((r) => ({
+          robot_name: r.robot_name || "없음",
+          robot_status: r.robot_status ? "O" : "X",
+        }));
+      } catch (error) {
+        console.error("데이터를 가져오는 중 에러가 발생했습니다:", error);
+      }
+    };
+
+    onMounted(fetchData);
+
+    return {
+      pageOneData,
+      pageOneHeaders,
+    };
+  },
+};
 </script>
-
-<style scoped>
-.v-container.home {
-  max-width: 1200px;
-  margin: auto;
-  padding: 20px;
-}
-
-.text-h3 {
-  margin-bottom: 20px;
-}
-
-.table {
-  margin-top: 20px;
-}
-</style>

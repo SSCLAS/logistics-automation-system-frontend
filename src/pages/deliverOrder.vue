@@ -1,87 +1,74 @@
 <template>
-  <v-container>
-    <div>
-      <div>
-        <div class="text-h5">현재 입고 현황</div>
-
-        <v-data-table-server class="table table-striped">
-          <thead :style="{ backgroundColor: '#343a40', color: 'white' }">
-            <tr>
-              <th>입고명령날짜</th>
-              <th>입고 진행중</th>
-              <th>입고완료날짜</th>
-              <th>입고상품명</th>
-              <th>작업로봇</th>
-            </tr>
-          </thead>
-          <draggable v-model="deliver_orders" tag="tbody" item-key="id">
-            <template #item="{ element }">
-              <tr>
-                <td>{{ element.deliver_order_order_date }}</td>
-                <td>{{ element.deliver_order_processing ? "O" : "X" }}</td>
-                <td>{{ element.deliver_order_complete_date }}</td>
-                <td>{{ getProductById(element.product_id) }}</td>
-                <td>{{ getRobotName(element.robot_name) }}</td>
-              </tr>
-            </template>
-          </draggable>
-        </v-data-table-server>
-      </div>
-      <rawDisplayer :value="list" title="List" />
-    </div>
-  </v-container>
+  <div>
+    <TableComponent
+      :items="pageOneData"
+      :headers="pageOneHeaders"
+      title="입고 현황"
+    />
+  </div>
 </template>
 
-<script lang="ts" setup>
-import draggable from "vuedraggable";
-import { ref } from "vue";
+<script>
+import axios from "axios";
+import TableComponent from "../components/table.vue";
+import { ref, onMounted } from "vue";
 
-interface Product {
-  url: string;
-  product_name: string;
-  robotName: string;
-}
+export default {
+  components: {
+    TableComponent,
+  },
+  setup() {
+    const pageOneData = ref([]);
+    const pageOneHeaders = ref([
+      { text: "입고 명령 날짜", value: "deliver_order_order_date" },
+      { text: "입고 진행 여부", value: "deliver_order_processing" },
+      { text: "입고 완료 날짜", value: "deliver_order_complete_date" },
+      { text: "상품 이름", value: "product_id" },
+      { text: "로봇 이름", value: "robot_id" },
+    ]);
 
-const deliver_orders = ref([]);
-const products = ref<Product[]>([]);
-const robots = ref<Product[]>([]);
+    const fetchData = async () => {
+      try {
+        const [deliverOrderResponse, productResponse, robotResponse] =
+          await Promise.all([
+            axios.get("http://127.0.0.1:8000/Deliver_order/"),
+            axios.get("http://127.0.0.1:8000/Product/"),
+            axios.get("http://127.0.0.1:8000/Robot/"),
+          ]);
+        const deliverOrders = deliverOrderResponse.data;
+        const products = productResponse.data;
+        const robots = robotResponse.data;
 
-const URL1 = "http://127.0.0.1:8000/Deliver_order/";
-const URL2 = "http://127.0.0.1:8000/Product/";
-const URL3 = "http://127.0.0.1:8000/Robot/";
+        pageOneData.value = deliverOrders.map((order) => ({
+          deliver_order_order_date:
+            order.deliver_order_order_date || "입고 명령 날짜 없음",
+          deliver_order_processing: order.deliver_order_processing ? "O" : "X",
+          deliver_order_complete_date:
+            order.deliver_order_complete_date || "입고 완료 날짜 없음",
+          product_id: getProductById(order.product_id, products),
+          robot_id: getRobotById(order.robot_id, robots), // 수정: 함수명 변경
+        }));
+      } catch (error) {
+        console.error("데이터를 가져오는 중 에러가 발생했습니다:", error);
+      }
+    };
 
-fetch(URL1)
-  .then((res) => res.json())
-  .then((json) => (deliver_orders.value = json));
-fetch(URL2)
-  .then((res) => res.json())
-  .then((json) => (products.value = json));
-fetch(URL3)
-  .then((res) => res.json())
-  .then((json) => (robots.value = json));
+    const getProductById = (productId, products) => {
+      const product = products.find((p) => p.url === productId);
+      return product ? product.product_name : "상품 없음";
+    };
 
-function getProductById(productId: string) {
-  const product = products.value.find((p) => p.url === productId);
-  return product ? product.product_name : "상품 없음";
-}
-function getRobotName(robotName: string) {
-  const robot = robots.value.find((r) => r.url === robotName);
-  return robot ? robot.robot_name : "로봇 없음";
-}
+    const getRobotById = (robotId, robots) => {
+      const robot = robots.find((r) => r.url === robotId); // 수정: 변수명 변경
+      return robot ? robot.robot_name : "로봇 없음"; // 수정: 반환값 변경
+    };
+
+    onMounted(fetchData);
+
+    return {
+      pageOneData,
+      pageOneHeaders,
+    };
+  },
+};
 </script>
-
-<style scoped>
-.v-container.home {
-  max-width: 1200px;
-  margin: auto;
-  padding: 20px;
-}
-
-.text-h3 {
-  margin-bottom: 20px;
-}
-
-.table {
-  margin-top: 20px;
-}
-</style>

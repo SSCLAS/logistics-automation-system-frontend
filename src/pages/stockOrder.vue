@@ -1,82 +1,73 @@
 <template>
-  <v-container>
-    <div>
-      <div>
-        <div class="text-h5">출고명령리스트</div>
-
-        <v-data-table-server class="table table-striped">
-          <thead :style="{ backgroundColor: '#343a40', color: 'white' }">
-            <tr>
-              <th>출고명령날짜</th>
-              <th>출고 진행중</th>
-              <th>출고완료날짜</th>
-              <th>출고상품</th>
-              <th>창고번호</th>
-            </tr>
-          </thead>
-          <draggable v-model="stock_order" tag="tbody" item-key="id">
-            <template #item="{ element }">
-              <tr>
-                <td>{{ element.stock_order_order_date }}</td>
-                <td>{{ element.stock_order_processing ? "O" : "X" }}</td>
-                <td>{{ element.stock_order_complete_date }}</td>
-                <td>{{ element.product_id }}</td>
-                <td>{{ element.ware_house_id }}</td>
-              </tr>
-            </template>
-          </draggable>
-        </v-data-table-server>
-      </div>
-      <rawDisplayer :value="list" title="List" />
-    </div>
-  </v-container>
+  <div>
+    <TableComponent
+      :items="pageOneData"
+      :headers="pageOneHeaders"
+      title="출고 현황"
+    />
+  </div>
 </template>
 
-<script lang="ts" setup>
-import draggable from "vuedraggable";
-import { ref } from "vue";
+<script>
+import axios from "axios";
+import TableComponent from "../components/table.vue";
+import { ref, onMounted } from "vue";
 
-interface Product {
-  url: string;
-  product_name: string;
-}
+export default {
+  components: {
+    TableComponent,
+  },
+  setup() {
+    const pageOneData = ref([]);
+    const pageOneHeaders = ref([
+      { text: "출고 명령 일자", value: "stock_order_order_date" },
+      { text: "출고 진행중", value: "stock_order_processing" },
+      { text: "출고 완료 일자", value: "stock_order_complete_date" },
+      { text: "상품 이름", value: "product_id" },
+      { text: "창고 이름", value: "ware_house_name" }, // 창고 이름으로 수정
+    ]);
 
-const stock_order = ref([]);
-const ware_houses = ref([]);
-const products = ref<Product[]>([]);
+    const fetchData = async () => {
+      try {
+        const [wareHouseResponse, productResponse, stockOrderResponse] =
+          await Promise.all([
+            axios.get("http://127.0.0.1:8000/Ware_house/"),
+            axios.get("http://127.0.0.1:8000/Product/"),
+            axios.get("http://127.0.0.1:8000/Stock_order/"),
+          ]);
 
-const URL1 = "http://127.0.0.1:8000/Stock_order/";
-const URL2 = "http://127.0.0.1:8000/Ware_house/";
-const URL3 = "http://127.0.0.1:8000/Product/";
+        const wareHouses = wareHouseResponse.data;
+        const products = productResponse.data;
+        const stockOrders = stockOrderResponse.data;
 
-fetch(URL1)
-  .then((res) => res.json())
-  .then((json) => (stock_order.value = json));
-fetch(URL2)
-  .then((res) => res.json())
-  .then((json) => (products.value = json));
-fetch(URL3)
-  .then((res) => res.json())
-  .then((json) => (products.value = json));
+        pageOneData.value = stockOrders.map((order) => ({
+          stock_order_order_date: order.stock_order_order_date || "없음",
+          stock_order_processing: order.stock_order_processing ? "O" : "X",
+          stock_order_complete_date: order.stock_order_complete_date || "없음",
+          product_id: getProductById(order.product_id, products),
+          ware_house_name: getWareHouseName(order.ware_house_id, wareHouses), // 창고 이름 매핑
+        }));
+      } catch (error) {
+        console.error("데이터를 가져오는 중 에러가 발생했습니다:", error);
+      }
+    };
 
-function getProductById(productId: string) {
-  const product = products.value.find((p) => p.url === productId);
-  return product ? product.product_name : "상품 없음";
-}
+    const getProductById = (productId, products) => {
+      const product = products.find((p) => p.url === productId);
+      return product ? product.product_name : "상품 없음";
+    };
+
+    const getWareHouseName = (wareHouseId, wareHouses) => {
+      const wareHouse = wareHouses.find((wh) => wh.url === wareHouseId);
+      return wareHouse ? wareHouse.ware_house_name : "창고 없음";
+    };
+
+    onMounted(fetchData);
+
+    return {
+      pageOneData,
+      pageOneHeaders,
+    };
+  },
+};
 </script>
-
-<style scoped>
-.v-container.home {
-  max-width: 1200px;
-  margin: auto;
-  padding: 20px;
-}
-
-.text-h3 {
-  margin-bottom: 20px;
-}
-
-.table {
-  margin-top: 20px;
-}
-</style>

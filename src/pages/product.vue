@@ -1,65 +1,55 @@
 <template>
-  <v-container>
-    <div>
-      <div>
-        <div class="text-h5">현재 적재 기록</div>
-
-        <v-data-table-server class="table table-striped">
-          <thead :style="{ backgroundColor: '#343a40', color: 'white' }">
-            <tr>
-              <th>상품명</th>
-              <th>상품입고날짜</th>
-              <th>상품회사</th>
-              <th>상품가격</th>
-            </tr>
-          </thead>
-          <draggable v-model="products" tag="tbody" item-key="id">
-            <template #item="{ element }">
-              <tr>
-                <td>{{ element.product_name }}</td>
-                <td>{{ element.product_date }}</td>
-                <td>{{ element.product_manufacture }}</td>
-                <td>{{ element.product_price }}</td>
-              </tr>
-            </template>
-          </draggable>
-        </v-data-table-server>
-      </div>
-      <rawDisplayer :value="list" title="List" />
-    </div>
-  </v-container>
+  <div>
+    <TableComponent
+      :items="pageOneData"
+      :headers="pageOneHeaders"
+      title="상품 리스트"
+    />
+  </div>
 </template>
 
-<script lang="ts" setup>
-import draggable from "vuedraggable";
-import { ref } from "vue";
+<script>
+import axios from "axios";
+import TableComponent from "../components/table.vue";
+import { ref, onMounted } from "vue";
 
-interface Product {
-  url: string;
-  product_name: string;
-}
+export default {
+  components: {
+    TableComponent,
+  },
+  setup() {
+    const pageOneData = ref([]);
+    const pageOneHeaders = ref([
+      { text: "상품 이름", value: "product_name" },
+      { text: "생산 날짜", value: "product_date" },
+      { text: "상품 제조 회사", value: "product_manufacture" }, // 제품 이름으로 헤더 수정
+      { text: "상품 가격", value: "product_price" },
+    ]);
 
-const products = ref<Product[]>([]);
+    const fetchData = async () => {
+      try {
+        const [productResponse] = await Promise.all([
+          axios.get("http://127.0.0.1:8000/Product/"),
+        ]);
+        const products = productResponse.data;
 
-const URL2 = "http://127.0.0.1:8000/Product/";
+        pageOneData.value = products.map((wh) => ({
+          product_name: wh.product_name || "상품 이름 없음",
+          product_date: wh.product_date || "생산 날짜 없음",
+          product_manufacture: wh.product_manufacture || "제조 회사 없음",
+          product_price: wh.product_price || "상품 가격 없음",
+        }));
+      } catch (error) {
+        console.error("데이터를 가져오는 중 에러가 발생했습니다:", error);
+      }
+    };
 
-fetch(URL2)
-  .then((res) => res.json())
-  .then((json) => (products.value = json));
+    onMounted(fetchData);
+
+    return {
+      pageOneData,
+      pageOneHeaders,
+    };
+  },
+};
 </script>
-
-<style scoped>
-.v-container.home {
-  max-width: 1200px;
-  margin: auto;
-  padding: 20px;
-}
-
-.text-h3 {
-  margin-bottom: 20px;
-}
-
-.table {
-  margin-top: 20px;
-}
-</style>
