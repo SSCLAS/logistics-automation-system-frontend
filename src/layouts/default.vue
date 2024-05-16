@@ -5,7 +5,7 @@
       permanent
       style="background-color: #263238"
     >
-      <h1 class="d-flex justify-center align-center">SSC</h1>
+      <h1 class="d-flex justify-center align-center padding:20px">SSC</h1>
       <v-container fluid class="d-flex justify-center align-center">
         <v-row class="my-4 justify-center align-center">
           <v-sheet
@@ -13,13 +13,9 @@
             style="background-color: #37474f; padding: 20px"
           >
             <h2 class="align-center">SSC개발팀</h2>
-            <p>팀원</p>
-            <p>김민정</p>
-            <p>김승현</p>
-            <p>김정훈</p>
-            <p>박한백</p>
-            <p>이상기</p>
-            <p>임희정</p>
+            <p>소속: 대구가톨릭대학교</p>
+            <p>과정: 캡스톤 프로젝트</p>
+            <p>개발기간: 2024.03.04~2024.06.01</p>
           </v-sheet>
         </v-row>
       </v-container>
@@ -52,6 +48,7 @@
               rounded="lg"
               class="my-4"
               style="background-color: #ffffff"
+              :elevation="8"
             >
               <router-view />
             </v-sheet>

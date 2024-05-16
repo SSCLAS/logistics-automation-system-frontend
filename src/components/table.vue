@@ -2,7 +2,7 @@
   <v-container>
     <div>
       <div>
-        <div class="text-h5">{{ title }}</div>
+        <div class="text-h5 title">{{ title }}</div>
         <table class="custom-table">
           <thead>
             <tr>
@@ -44,6 +44,10 @@ export default {
 </script>
 
 <style scoped>
+.title {
+  color: #263238;
+  font-weight: bold;
+}
 .table-title {
   margin-bottom: 20px;
   text-align: left;
@@ -55,13 +59,15 @@ export default {
   width: 100%;
   margin-top: 20px;
   border-collapse: collapse;
+  color: #263238;
 }
 
 .custom-table th,
 .custom-table td {
   padding: 8px;
-  text-align: left;
+  text-align: center;
   border-bottom: 1px solid #ddd;
+  font-weight: bold;
 }
 
 .custom-table th {

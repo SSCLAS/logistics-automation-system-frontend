@@ -1,5 +1,5 @@
 <template>
-  <v-footer class="bg-black-2">
+  <v-footer class="footer">
     <v-row justify="center" no-gutters>
       <v-btn
         v-for="link in links"
@@ -25,3 +25,9 @@ export default {
   }),
 };
 </script>
+
+<style scoope>
+.footer {
+  background-color: #263238;
+}
+</style>
