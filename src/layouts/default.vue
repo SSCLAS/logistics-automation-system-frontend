@@ -27,14 +27,22 @@
           link
         >
           <v-list-item-icon>
-            <v-icon>{{ link.icon }}</v-icon>
+            <v-icon>{{ link.icon }}</v-icon> 
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title>{{ link.text }}</v-list-item-title>
-          </v-list-item-content>
-          <v-list-item-action>
-            <v-icon>mdi-chevron-right</v-icon>
+            <v-list-item-title class="d-flex align-center">
+              <span>{{ link.text }}</span>
+              <v-spacer></v-spacer>
+              <v-icon>mdi-chevron-right</v-icon>
+            </v-list-item-title>
+             
+              <v-list-item-action>
+                <v-spacer></v-spacer>
+                <v-icon>mdi-chevron-right</v-icon>
           </v-list-item-action>
+          
+          </v-list-item-content>  
+          
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -67,6 +75,7 @@ const links = [
   { text: "출고명령", path: "/stockOrder", icon: "mdi-export" },
   { text: "입고명령", path: "/deliverOrder", icon: "mdi-import" },
   { text: "로봇", path: "/robot", icon: "mdi-robot" },
+  { text: "스캔", path: "/scan", icon : "mdi-camera"}
 ];
 </script>
 
