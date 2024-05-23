@@ -13,6 +13,14 @@ import axios from "axios";
 import TableComponent from "../components/table.vue";
 import { ref, onMounted } from "vue";
 
+const API_NAME={
+    "Robot": "http://192.168.0.100:8000/Robot/",
+    "Product": "http://192.168.0.100:8000/Product/",
+    "Ware_house": "http://192.168.0.100:8000/Ware_house/",
+    "Deliver_order": "http://192.168.0.100:8000/Deliver_order/",
+    "Stock_order": "http://192.168.0.100:8000/Stock_order/"
+}
+
 export default {
   components: {
     TableComponent,
@@ -27,7 +35,7 @@ export default {
     const fetchData = async () => {
       try {
         const [robotResponse] = await Promise.all([
-          axios.get("http://127.0.0.1:8000/Robot/"),
+          axios.get(API_NAME['Robot']),
         ]);
         const robots = robotResponse.data;
 

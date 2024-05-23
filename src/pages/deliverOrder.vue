@@ -1,10 +1,12 @@
 <template>
   <div>
+    <p>상품</p>
     <TableComponent
       :items="pageOneData"
       :headers="pageOneHeaders"
-      title="입고 현황"
+      title="출고 이력"
     />
+
   </div>
 </template>
 
@@ -13,6 +15,14 @@ import axios from "axios";
 import TableComponent from "../components/table.vue";
 import { ref, onMounted } from "vue";
 
+const API_NAME={
+    "Robot": "http://192.168.0.100:8000/Robot/",
+    "Product": "http://192.168.0.100:8000/Product/",
+    "Ware_house": "http://192.168.0.100:8000/Ware_house/",
+    "Deliver_order": "http://192.168.0.100:8000/Deliver_order/",
+    "Stock_order": "http://192.168.0.100:8000/Stock_order/"
+}
+
 export default {
   components: {
     TableComponent,
@@ -20,9 +30,8 @@ export default {
   setup() {
     const pageOneData = ref([]);
     const pageOneHeaders = ref([
-      { text: "입고 명령 날짜", value: "deliver_order_order_date" },
-      { text: "입고 진행 여부", value: "deliver_order_processing" },
-      { text: "입고 완료 날짜", value: "deliver_order_complete_date" },
+      { text: "출고 명령 날짜", value: "deliver_order_order_date" },
+      { text: "출고 완료 날짜", value: "deliver_order_complete_date" },
       { text: "상품 이름", value: "product_id" },
       { text: "로봇 이름", value: "robot_id" },
     ]);
@@ -31,9 +40,9 @@ export default {
       try {
         const [deliverOrderResponse, productResponse, robotResponse] =
           await Promise.all([
-            axios.get("http://127.0.0.1:8000/Deliver_order/"),
-            axios.get("http://127.0.0.1:8000/Product/"),
-            axios.get("http://127.0.0.1:8000/Robot/"),
+            axios.get(API_NAME['Deliver_order']),
+            axios.get(API_NAME['Product']),
+            axios.get(API_NAME['Robot']),
           ]);
         const deliverOrders = deliverOrderResponse.data;
         const products = productResponse.data;
@@ -41,10 +50,10 @@ export default {
 
         pageOneData.value = deliverOrders.map((order) => ({
           deliver_order_order_date:
-            order.deliver_order_order_date || "입고 명령 날짜 없음",
-          deliver_order_processing: order.deliver_order_processing ? "O" : "X",
+            order.deliver_order_order_date || "출고 명령 날짜 없음",
+          deliver_order_processing: order.deliver_order_processing ? "진행" : "진행안함",
           deliver_order_complete_date:
-            order.deliver_order_complete_date || "입고 완료 날짜 없음",
+            order.deliver_order_complete_date || "출고 완료 날짜 없음",
           product_id: getProductById(order.product_id, products),
           robot_id: getRobotById(order.robot_id, robots), // 수정: 함수명 변경
         }));
