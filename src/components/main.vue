@@ -87,7 +87,7 @@
   
   <script setup>
   const links = [
-    { text: "창고조회", path: "/", icon: "mdi-package-variant-closed" },
+    { text: "적재현황", path: "/", icon: "mdi-package-variant-closed" },
     { text: "상품리스트", path: "/product", icon: "mdi-history" },
     { text: "입고명령", path: "/stockOrder", icon: "mdi-import" },
     { text: "출고이력", path: "/deliverOrder", icon: "mdi-export" },

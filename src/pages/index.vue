@@ -35,7 +35,7 @@ export default {
 
         const wareHouses = wareHouseResponse.data;
         const products = productResponse.data;
-        
+
         pageOneData.value = wareHouses.map((wh) => ({
           ware_house_name: wh.ware_house_name || "없음",
           ware_house_status: wh.ware_house_status ? "O" : "X",
