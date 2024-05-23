@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 [ZoneTransfer]
 ZoneId=3
 ReferrerUrl=https://www.google.com/
 HostUrl=https://www.google.com/
+=======
+[ZoneTransfer]
+ZoneId=3
+ReferrerUrl=https://www.google.com/
+HostUrl=https://www.google.com/
+>>>>>>> 864c51504ee6114ebdb1be22bda4139a1291cbf6

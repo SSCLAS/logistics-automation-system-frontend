@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 [ZoneTransfer]
 ZoneId=3
 ReferrerUrl=https://www.google.com/
 HostUrl=https://cdn-icons-png.flaticon.com/512/1524/1524791.png
+=======
+[ZoneTransfer]
+ZoneId=3
+ReferrerUrl=https://www.google.com/
+HostUrl=https://cdn-icons-png.flaticon.com/512/1524/1524791.png
+>>>>>>> 864c51504ee6114ebdb1be22bda4139a1291cbf6

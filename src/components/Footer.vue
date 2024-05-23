@@ -8,12 +8,20 @@
 
 <script>
 export default {
+<<<<<<< HEAD
  name : "Footer"
+=======
+  name: "Footer",
+>>>>>>> 864c51504ee6114ebdb1be22bda4139a1291cbf6
 };
 </script>
 
 <style scoped>
+<<<<<<< HEAD
 v.footer {
+=======
+.v-footer {
+>>>>>>> 864c51504ee6114ebdb1be22bda4139a1291cbf6
   background-color: #263238;
   color: white;
   width: 100%; /* Footer가 전체 너비를 차지하도록 설정 */
