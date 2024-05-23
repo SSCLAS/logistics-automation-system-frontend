@@ -1,5 +1,6 @@
 <template>
   <div>
+    <p>상품</p>
     <TableComponent
       :items="pageOneData"
       :headers="pageOneHeaders"
