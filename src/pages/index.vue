@@ -1,63 +1,90 @@
 <template>
-  <v-data-table :items="pageOneData" :headers="pageOneHeaders">
-    <template v-slot:item.deliver_order_date="{ item }">
-      <v-checkbox v-model="item.deliver_order_date">
-      </v-checkbox>
-    </template>
-  </v-data-table>
+  <v-container>
+    <v-responsive>
+      <v-card title="상품 배송 현황">
+        <template v-slot:text>
+          <v-text-field
+            v-model="search"
+            label="Search"
+            prepend-inner-icon="mdi-magnify"
+            variant="outlined"
+            hide-details
+            single-line
+          ></v-text-field>
+        </template>
+
+        <v-data-table
+          :items="product_list"
+          :headers="product_header"
+          :search="search"
+        >
+          <template v-slot:item.actions="{ item }">
+            <v-btn
+              color="primary"
+              @click="update(item.url, item.product_available)"
+            >
+              {{ item.product_available ? "배송취소" : "배송" }}
+            </v-btn>
+          </template>
+          <template v-slot:item.product_available="{ item }">
+            <span>{{ item.product_available ? "배송됨" : "배송안됨" }}</span>
+          </template>
+        </v-data-table>
+      </v-card>
+    </v-responsive>
+  </v-container>
 </template>
 
-<script>
+<script setup>
+import { ref } from "vue";
 import axios from "axios";
-import { ref, onMounted } from "vue";
+import { useDate } from "vuetify";
 
-const API_NAME = {
-  Product: "http://192.168.0.100:8000/Product/",
-  Ware_house: "http://192.168.0.100:8000/Ware_house/"
-};
-
-export default {
-  setup() {
-    const pageOneData = ref([]);
-    const pageOneHeaders = [
-      { title: "창고 이름", align: "center", key: "ware_house_name" },
-      { title: "사용 여부", align: "center", key: "ware_house_status" },
-      { title: "상품 이름", align: "center", key: "product_id" },
-      { title: "출고 요청", align: "center", key: "deliver_order_date" }
-    ];
-
-    const fetchData = async () => {
-      try {
-        const [wareHouseResponse, productResponse] = await Promise.all([
-          axios.get(API_NAME['Ware_house']),
-          axios.get(API_NAME['Product'])
-        ]);
-
-        const wareHouses = wareHouseResponse.data;
-        const products = productResponse.data;
-
-        pageOneData.value = wareHouses.map((wh) => ({
-          ware_house_name: wh.ware_house_name || "없음",
-          ware_house_status: wh.ware_house_status ? "O" : "X",
-          product_id: getProductById(wh.product_id, products),
-          deliver_order_date: wh.deliver_order_date
-        }));
-      } catch (error) {
-        console.error("데이터를 가져오는 중 에러가 발생했습니다:", error);
-      }
-    };
-
-    const getProductById = (productId, products) => {
-      const product = products.find((p) => p.url === productId);
-      return product ? product.product_name : "상품 없음";
-    };
-
-    onMounted(fetchData);
-
-    return {
-      pageOneData,
-      pageOneHeaders
-    };
+const date = useDate();
+const search = ref("");
+const product_list = ref([]);
+const product_header = [
+  { title: "제품이름", key: "product_name", align: "center" },
+  {
+    title: "제품 제조 날짜",
+    key: "product_date",
+    align: "center",
+    value: (item) => `${date.format(item.product_date, "keyboardDateTime")}`,
   },
-};
+  { title: "제품 가격", key: "product_price", align: "center" },
+  { title: "제품 배송 상태", key: "product_available", align: "center" },
+  { title: "배송", key: "actions", align: "center", sortable: "false" },
+];
+
+// Products 조회 함수
+async function getProducts() {
+  try {
+    const response = await axios.get("http://127.0.0.1:8000/Product/");
+    if (response.status == 200) {
+      product_list.value = response.data;
+      console.log("성공");
+    } else {
+      console.log("Failed to fetch product data");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// product_available 업데이트
+async function update(url, status) {
+  try {
+    const response = await axios.patch(url, {
+      product_available: !status,
+    });
+    if (response.status == 200) {
+      console.log("OK");
+      getProducts();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+getProducts();
 </script>
