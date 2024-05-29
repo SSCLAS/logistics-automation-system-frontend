@@ -52,15 +52,15 @@ const product_header = [
   },
   {
     title: "입고 진행 상태",
-    key: "stock_order_processing",
+    key: "deliver_order_processing",
     align: "center",
   },
   {
     title: "입고 완료 날짜",
-    key: "stock_order_complete_date",
+    key: "deliver_order_complete_date",
     align: "center",
     value: (item) =>
-      `${date.format(item.stock_order_complete_date, "keyboardDateTime")}`,
+      `${date.format(item.deliver_order_complete_date, "keyboardDateTime")}`,
   },
 ];
 
@@ -84,7 +84,7 @@ async function fetchProductDetails(productUrl) {
 async function getProducts() {
   try {
     const stockOrderResponse = await axios.get(
-      "http://127.0.0.1:8000/Stock_order/"
+      "http://127.0.0.1:8000/Deliver_order/"
     );
     if (stockOrderResponse.status === 200) {
       const stockOrders = stockOrderResponse.data;
