@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-responsive>
-      <v-card title="상품 배송 현황">
+      <v-card title="상품 리스트">
         <template v-slot:text>
           <v-text-field
             v-model="search"
@@ -41,7 +41,6 @@ const product_header = [
     value: (item) => `${date.format(item.product_date, "keyboardDateTime")}`,
   },
   { title: "제품 가격", key: "product_price", align: "center" },
-  { title: "제품 배송 상태", key: "product_available", align: "center" },
 ];
 
 // Products 조회 함수
@@ -58,21 +57,5 @@ async function getProducts() {
     console.log(error);
   }
 }
-
-// product_available 업데이트
-async function update(url, status) {
-  try {
-    const response = await axios.patch(url, {
-      product_available: !status,
-    });
-    if (response.status == 200) {
-      console.log("OK");
-      getProducts();
-    }
-  } catch (error) {
-    console.log(error);
-  }
-}
-
 getProducts();
 </script>
