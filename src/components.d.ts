@@ -12,8 +12,11 @@ declare module 'vue' {
     Header: typeof import('./components/Header.vue')['default']
     Main: typeof import('./components/main.vue')['default']
     Main1: typeof import('./components/Main1.vue')['default']
+    RobotImage: typeof import('./components/robotImage.vue')['default']
+    RobotList: typeof import('./components/robotList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    RrobotImage: typeof import('./components/RrobotImage.vue')['default']
     Table: typeof import('./components/table.vue')['default']
   }
 }

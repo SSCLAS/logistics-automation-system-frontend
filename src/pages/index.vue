@@ -18,22 +18,21 @@
           :headers="product_header"
           :search="search"
         >
-        
           <template v-slot:item.actions="{ item }">
             <template v-if="item.product_name">
-            <v-btn
-              color="primary"
-              :disabled="item.deliver_ordered"
-              @click="update(item.product_id, item.deliver_ordered)">
-            
-            <span>출고</span>
-            </v-btn>
+              <v-btn
+                color="primary"
+                :disabled="item.deliver_ordered"
+                @click="update(item.product_id, item.deliver_ordered)"
+              >
+                <span>출고</span>
+              </v-btn>
             </template>
           </template>
 
           <template v-slot:item.deliver_ordered="{ item }">
             <template v-if="item.deliver_ordered">
-            <span>{{ item.deliver_ordered ? "출고지시" : "출고전" }}</span>
+              <span>{{ item.deliver_ordered ? "출고지시" : "출고전" }}</span>
             </template>
           </template>
         </v-data-table>
@@ -51,7 +50,7 @@ const date = useDate();
 const search = ref("");
 const product_list = ref([]);
 const product_header = [
-{ title: "창고", key: "ware_house_name", align: "center" },
+  { title: "창고", key: "ware_house_name", align: "center" },
   { title: "제품이름", key: "product_name", align: "center" },
   { title: "제품가격", key: "product_price", align: "center" },
   { title: "제품 출고 상태", key: "deliver_ordered", align: "center" },
@@ -64,7 +63,7 @@ async function getProducts() {
     if (response.status == 200) {
       product_list.value = response.data;
       console.log("성공");
-    } 
+    }
   } catch (error) {
     console.log(error);
   }
@@ -72,10 +71,13 @@ async function getProducts() {
 
 async function update(product_id, status) {
   try {
-    const response = await axios.post('http://192.168.0.100:8000/Deliver_order/', {
-      'product_id': product_id,
-      'robot_id': 'http://192.168.0.100:8000/Robot/1/'
-    });
+    const response = await axios.post(
+      "http://192.168.0.100:8000/Deliver_order/",
+      {
+        product_id: product_id,
+        robot_id: "http://192.168.0.100:8000/Robot/1/",
+      }
+    );
 
     if (response.status == 201) {
       console.log("OK");
