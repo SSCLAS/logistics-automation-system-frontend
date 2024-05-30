@@ -13,9 +13,7 @@
 
           <v-card-title> 로봇명: {{ robot.robot_name }} </v-card-title>
 
-          <v-card-subtitle>
-            {{ robot.robot_status }}
-          </v-card-subtitle>
+          <v-card-subtitle> 활성화: {{ robot.robot_status }} </v-card-subtitle>
 
           <v-card-actions>
             <v-spacer></v-spacer>
