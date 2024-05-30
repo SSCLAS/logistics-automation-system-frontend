@@ -46,6 +46,10 @@ const product_header = [
     key: "robot_status",
     align: "center",
   },
+  {
+    key:"robot_image",
+    align:"center"
+  }
 ];
 
 // 각 product_id에 대해 제품 정보를 가져오는 함수
@@ -69,7 +73,7 @@ async function fetchProductDetails(productUrl) {
 async function getProducts() {
   try {
     const deliverOrderResponse = await axios.get(
-      "http://127.0.0.1:8000/Robot/"
+      "http://192.168.0.100:8000/Robot/"
     );
     if (deliverOrderResponse.status === 200) {
       const deliverOrders = deliverOrderResponse.data;

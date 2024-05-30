@@ -1,23 +1,20 @@
 <template>
   <v-app style="background-color: #eceff1">
-    <!-- 네비게이션 드로어 -->
+
     <v-navigation-drawer
       width="244"
       permanent
       style="background-color: #263238"
     >
-      <!-- 로고 이미지 -->
       <a href="/"
         ><img src="@/images/dcu.png" alt="DCU Logo" class="dcu-logo"
       /></a>
-      <!-- 팀 정보 -->
       <v-container fluid class="d-flex justify-center align-center">
         <v-row class="my-4 justify-center align-center">
           <v-sheet
             rounded="lg"
             style="background-color: #37474f; padding: 20px"
           >
-            <!-- 팀 정보 텍스트 -->
             <h4 class="align-center">SSC</h4>
             <v-spacer class="my-2"></v-spacer>
             <p class="text-small">소속: 대구가톨릭대학교</p>
@@ -26,7 +23,6 @@
           </v-sheet>
         </v-row>
       </v-container>
-      <!-- 네비게이션 링크 리스트 -->
       <v-list dense>
         <v-list-item
           v-for="link in links"
@@ -49,10 +45,8 @@
       </v-list>
     </v-navigation-drawer>
 
-    <!-- 앱 바 -->
     <v-app-bar app style="background-color: #ffffff; height: 50px">
       <v-spacer></v-spacer>
-      <!-- 사용자 프로필 -->
       <div class="user-container">
         <v-avatar color="grey" class="mx-2">
           <v-img></v-img>
@@ -64,7 +58,6 @@
       </div>
     </v-app-bar>
 
-    <!-- 메인 콘텐츠 -->
     <v-main>
       <v-container fluid class="d-flex justify-center align-center h-100">
         <v-row>
@@ -87,10 +80,10 @@
 
 <script setup>
 const links = [
-  { text: "적재현황", path: "/", icon: "mdi-package-variant-closed" },
-  { text: "상품리스트", path: "/product", icon: "mdi-history" },
-  { text: "입고명령", path: "/deliverOrder", icon: "mdi-import" },
-  { text: "출고이력", path: "/stockOrder", icon: "mdi-export" },
+  { text: "창고적재상태", path: "/", icon: "mdi-package-variant-closed" },
+  { text: "제품", path: "/product", icon: "mdi-history" },
+  { text: "입고이력", path: "/stockOrder", icon: "mdi-import" },
+  { text: "출고이력", path: "/deliverOrder", icon: "mdi-export" },
   { text: "로봇", path: "/robot", icon: "mdi-robot" },
 ];
 </script>

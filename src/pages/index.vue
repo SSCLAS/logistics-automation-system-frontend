@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-responsive>
-      <v-card title="상품 배송 현황">
+      <v-card title="창고">
         <template v-slot:text>
           <v-text-field
             v-model="search"
@@ -18,16 +18,23 @@
           :headers="product_header"
           :search="search"
         >
+        
           <template v-slot:item.actions="{ item }">
+            <template v-if="item.product_name">
             <v-btn
               color="primary"
-              @click="update(item.url, item.product_available)"
-            >
-              {{ item.product_available ? "배송취소" : "배송" }}
+              :disabled="item.deliver_ordered"
+              @click="update(item.product_id, item.deliver_ordered)">
+            
+            <span>출고</span>
             </v-btn>
+            </template>
           </template>
-          <template v-slot:item.product_available="{ item }">
-            <span>{{ item.product_available ? "배송됨" : "배송안됨" }}</span>
+
+          <template v-slot:item.deliver_ordered="{ item }">
+            <template v-if="item.deliver_ordered">
+            <span>{{ item.deliver_ordered ? "출고지시" : "출고전" }}</span>
+            </template>
           </template>
         </v-data-table>
       </v-card>
@@ -44,40 +51,33 @@ const date = useDate();
 const search = ref("");
 const product_list = ref([]);
 const product_header = [
+{ title: "창고", key: "ware_house_name", align: "center" },
   { title: "제품이름", key: "product_name", align: "center" },
-  {
-    title: "제품 제조 날짜",
-    key: "product_date",
-    align: "center",
-    value: (item) => `${date.format(item.product_date, "keyboardDateTime")}`,
-  },
-  { title: "제품 가격", key: "product_price", align: "center" },
-  { title: "제품 배송 상태", key: "product_available", align: "center" },
-  { title: "배송", key: "actions", align: "center", sortable: "false" },
+  { title: "제품가격", key: "product_price", align: "center" },
+  { title: "제품 출고 상태", key: "deliver_ordered", align: "center" },
+  { title: "출고", key: "actions", align: "center", sortable: "false" },
 ];
 
-// Products 조회 함수
 async function getProducts() {
   try {
-    const response = await axios.get("http://127.0.0.1:8000/Product/");
+    const response = await axios.get("http://192.168.0.100:8000/Ware_house/");
     if (response.status == 200) {
       product_list.value = response.data;
       console.log("성공");
-    } else {
-      console.log("Failed to fetch product data");
-    }
+    } 
   } catch (error) {
     console.log(error);
   }
 }
 
-// product_available 업데이트
-async function update(url, status) {
+async function update(product_id, status) {
   try {
-    const response = await axios.patch(url, {
-      product_available: !status,
+    const response = await axios.post('http://192.168.0.100:8000/Deliver_order/', {
+      'product_id': product_id,
+      'robot_id': 'http://192.168.0.100:8000/Robot/1/'
     });
-    if (response.status == 200) {
+
+    if (response.status == 201) {
       console.log("OK");
       getProducts();
     }

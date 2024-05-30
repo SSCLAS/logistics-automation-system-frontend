@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-responsive>
-      <v-card title="출고 상태">
+      <v-card title="입고 상태">
         <template v-slot:text>
           <v-text-field
             v-model="search"
@@ -18,9 +18,9 @@
           :headers="product_header"
           :search="search"
         >
-          <template v-slot:item.stock_order_processing="{ item }">
+          <template v-slot:item.deliver_order_processing="{ item }">
             <span>{{
-              item.stock_order_processing ? "진행중" : "진행안됨"
+              item.deliver_order_processing ? "진행중" : "진행안됨"
             }}</span>
           </template>
         </v-data-table>
@@ -60,11 +60,10 @@ const product_header = [
     key: "stock_order_complete_date",
     align: "center",
     value: (item) =>
-      `${date.format(item.stock_order_complete_date, "keyboardDateTime")}`,
+      `${date.format(item.deliver_order_complete_date, "keyboardDateTime")}`,
   },
 ];
 
-// 각 product_id에 대해 제품 정보를 가져오는 함수
 async function fetchProductDetails(productUrl) {
   try {
     const response = await axios.get(productUrl);
@@ -80,16 +79,14 @@ async function fetchProductDetails(productUrl) {
   }
 }
 
-// Products 조회 함수
 async function getProducts() {
   try {
     const stockOrderResponse = await axios.get(
-      "http://127.0.0.1:8000/Stock_order/"
+      "http://192.168.0.100:8000/Stock_order/"
     );
     if (stockOrderResponse.status === 200) {
       const stockOrders = stockOrderResponse.data;
 
-      // 각 stock order에 대해 product 정보를 병합
       const productPromises = stockOrders.map(async (order) => {
         const productData = await fetchProductDetails(order.product_id);
         return {
@@ -98,7 +95,6 @@ async function getProducts() {
         };
       });
 
-      // 모든 product 정보를 병합하여 최종 데이터 설정
       product_list.value = await Promise.all(productPromises);
       console.log("Product List:", product_list.value); // Debugging: Final product list
     } else {

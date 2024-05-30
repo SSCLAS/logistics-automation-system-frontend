@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-responsive>
-      <v-card title="상품 리스트">
+      <v-card title="제품 리스트">
         <template v-slot:text>
           <v-text-field
             v-model="search"
@@ -43,10 +43,9 @@ const product_header = [
   { title: "제품 가격", key: "product_price", align: "center" },
 ];
 
-// Products 조회 함수
 async function getProducts() {
   try {
-    const response = await axios.get("http://127.0.0.1:8000/Product/");
+    const response = await axios.get("http://192.168.0.100:8000/Product/");
     if (response.status == 200) {
       product_list.value = response.data;
       console.log("성공");
