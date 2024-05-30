@@ -1,9 +1,10 @@
 <template>
   <v-container>
     <v-responsive>
-      <v-card title="제품 리스트">
+      <v-card title="제품 리스트" class="title">
         <template v-slot:text>
           <v-text-field
+            class="field"
             v-model="search"
             label="Search"
             prepend-inner-icon="mdi-magnify"
@@ -14,9 +15,11 @@
         </template>
 
         <v-data-table
+          class="table"
           :items="product_list"
           :headers="product_header"
           :search="search"
+          outlined
         >
         </v-data-table>
       </v-card>
@@ -58,3 +61,22 @@ async function getProducts() {
 }
 getProducts();
 </script>
+
+<style scoped>
+.card {
+  background: #ffffff;
+}
+.title {
+  color: black;
+}
+.field {
+  margin-bottom: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  color: black;
+}
+.table {
+  background: #ffffff;
+  color: black;
+}
+</style>

@@ -59,9 +59,10 @@ const product_header = [
     title: "출고 완료 날짜",
     key: "deliver_order_complete_date",
     align: "center",
-    value: (item) => item.deliver_order_complete_date ?
-      `${date.format(item.deliver_order_complete_date, "keyboardDateTime")}` :
-      '',
+    value: (item) =>
+      item.deliver_order_complete_date
+        ? `${date.format(item.deliver_order_complete_date, "keyboardDateTime")}`
+        : "",
   },
 ];
 
@@ -97,7 +98,7 @@ async function getProducts() {
       });
 
       product_list.value = await Promise.all(productPromises);
-      console.log("Product List:", product_list.value); 
+      console.log("Product List:", product_list.value);
     } else {
       console.log("Failed to fetch stock order data");
     }
@@ -108,3 +109,30 @@ async function getProducts() {
 
 getProducts();
 </script>
+
+<style scoped>
+.card {
+  background: #ffffff;
+}
+.title {
+  font-size: 36px;
+  font-weight: bold;
+  color: black;
+}
+.field {
+  margin-bottom: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  color: black;
+}
+.table {
+  font-size: 18px;
+  background: #ffffff;
+  color: black;
+  font-weight: bolder;
+}
+.headerClasses {
+  font-size: 24px; /* 헤더 글씨 크기 설정 */
+  font-weight: bold; /* 헤더 글씨 두껍게 설정 */
+}
+</style>

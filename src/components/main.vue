@@ -1,25 +1,30 @@
 <template>
-  <v-app style="background-color: #eceff1">
-
+  <v-app style="background-color: #ffffff">
     <v-navigation-drawer
       width="244"
       permanent
-      style="background-color: #263238"
+      style="background-color: #ffffff; border-right: 2px solid #ddd"
     >
       <a href="/"
-        ><img src="@/images/dcu.png" alt="DCU Logo" class="dcu-logo"
+        ><img src="@/images/1.png" alt="DCU Logo" class="dcu-logo"
       /></a>
       <v-container fluid class="d-flex justify-center align-center">
         <v-row class="my-4 justify-center align-center">
           <v-sheet
             rounded="lg"
-            style="background-color: #37474f; padding: 20px"
+            style="background-color: #2979ff; padding: 20px"
           >
-            <h4 class="align-center">SSC</h4>
+            <h4 class="align-center" style="color: #ffffff">SSC</h4>
             <v-spacer class="my-2"></v-spacer>
-            <p class="text-small">소속: 대구가톨릭대학교</p>
-            <p class="text-small">과정: 캡스톤 프로젝트</p>
-            <p class="text-small">[개발기간] 2024.03.04~2024.06.01</p>
+            <p class="text-small" style="color: #ffffff; font-weight: bold">
+              소속: <span style="font-weight: bold">대구가톨릭대학교</span>
+            </p>
+            <p class="text-small" style="color: #ffffff; font-weight: bold">
+              과정: 캡스톤 프로젝트
+            </p>
+            <p class="text-small" style="color: #ffffff; font-weight: bold">
+              [개발기간] 2024.03.04~2024.06.01
+            </p>
           </v-sheet>
         </v-row>
       </v-container>
@@ -32,10 +37,13 @@
           class="list-item-spacing"
         >
           <v-list-item-icon>
-            <v-icon>{{ link.icon }}</v-icon>
+            <v-icon :color="'black'">{{ link.icon }}</v-icon>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title class="d-flex align-center">
+            <v-list-item-title
+              class="d-flex align-center"
+              style="color: black; font-weight: bold"
+            >
               <span>{{ link.text }}</span>
               <v-spacer></v-spacer>
               <v-icon>mdi-chevron-right</v-icon>
@@ -63,11 +71,9 @@
         <v-row>
           <v-col cols="12">
             <v-sheet
-              min-height="70vh"
               rounded="lg"
               class="my-4"
-              style="background-color: #ffffff"
-              :elevation="8"
+              style="background-color: #ffffff; border: 2px solid #ddd"
             >
               <router-view />
             </v-sheet>
@@ -81,7 +87,7 @@
 <script setup>
 const links = [
   { text: "창고적재상태", path: "/", icon: "mdi-package-variant-closed" },
-  { text: "제품", path: "/product", icon: "mdi-history" },
+  { text: "제품", path: "/product", icon: "mdi-package" },
   { text: "입고이력", path: "/stockOrder", icon: "mdi-import" },
   { text: "출고이력", path: "/deliverOrder", icon: "mdi-export" },
   { text: "로봇", path: "/robot", icon: "mdi-robot" },

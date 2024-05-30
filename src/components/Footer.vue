@@ -1,5 +1,5 @@
 <template>
-  <v-footer height="40" color= "blue-grey-darken-4" app>
+  <v-footer height="40" color="blue-grey-darken-4" app>
     <a
       v-for="item in items"
       :key="item.title"
@@ -43,7 +43,7 @@ const items = [
     icon: "mdi-shield-star-outline",
     href: "https://support.vuetifyjs.com/",
   },
- /* {
+  /* {
     title: "Vuetify X",
     icon: `svg:M2.04875 3.00002L9.77052 13.3248L1.99998 21.7192H3.74882L10.5519 14.3697L16.0486 21.7192H22L13.8437 10.8137L21.0765 3.00002H19.3277L13.0624 9.76874L8.0001 3.00002H2.04875ZM4.62054 4.28821H7.35461L19.4278 20.4308H16.6937L4.62054 4.28821Z`,
     href: "https://x.com/vuetifyjs",
@@ -53,7 +53,7 @@ const items = [
     icon: `mdi-github`,
     href: "https://github.com/SSCLAS",
   },
- /* {
+  /* {
     title: "Vuetify Discord",
     icon: `mdi-discord`,
     href: "https://community.vuetifyjs.com/",

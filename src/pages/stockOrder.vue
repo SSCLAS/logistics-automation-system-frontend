@@ -107,3 +107,28 @@ async function getProducts() {
 
 getProducts();
 </script>
+
+<style scoped>
+.card {
+  background: #ffffff;
+}
+.title {
+  color: black;
+}
+.field {
+  margin-bottom: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  color: black;
+}
+.table {
+  font-size: 18px;
+  background: #ffffff;
+  color: black;
+  font-weight: bolder;
+}
+.headerClasses {
+  font-size: 24px; /* 헤더 글씨 크기 설정 */
+  font-weight: bold; /* 헤더 글씨 두껍게 설정 */
+}
+</style>
