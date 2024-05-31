@@ -9,7 +9,7 @@
         md="4"
       >
         <v-card class="mx-auto" max-width="344">
-          <v-img height="200" :src="robot.robot_image" cover></v-img>
+          <v-img height="400" :src="robot.robot_image" cover></v-img>
 
           <v-card-title>
             <strong>로봇명</strong>
