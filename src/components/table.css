@@ -1,0 +1,9 @@
+.title {
+  font-size: 25px !important;
+  font-weight: bolder !important;
+}
+.field {
+  margin-bottom: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+}

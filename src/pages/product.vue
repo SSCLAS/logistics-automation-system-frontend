@@ -1,19 +1,17 @@
 <template>
   <v-container>
     <v-responsive>
-      <v-card title="제품 리스트" class="title">
-        <template v-slot:text>
-          <v-text-field
-            class="field"
-            v-model="search"
-            label="Search"
-            prepend-inner-icon="mdi-magnify"
-            variant="outlined"
-            hide-details
-            single-line
-          ></v-text-field>
-        </template>
-
+      <v-card>
+        <v-card-title class="title">제품 리스트</v-card-title>
+        <v-text-field
+          class="field"
+          v-model="search"
+          label="Search"
+          prepend-inner-icon="mdi-magnify"
+          variant="outlined"
+          hide-details
+          single-line
+        ></v-text-field>
         <v-data-table
           class="table"
           :items="product_list"
@@ -31,6 +29,7 @@
 import { ref } from "vue";
 import axios from "axios";
 import { useDate } from "vuetify";
+import "../components/table.css";
 
 const date = useDate();
 const search = ref("");
@@ -61,22 +60,3 @@ async function getProducts() {
 }
 getProducts();
 </script>
-
-<style scoped>
-.card {
-  background: #ffffff;
-}
-.title {
-  color: black;
-}
-.field {
-  margin-bottom: 20px;
-  margin-left: 20px;
-  margin-right: 20px;
-  color: black;
-}
-.table {
-  background: #ffffff;
-  color: black;
-}
-</style>

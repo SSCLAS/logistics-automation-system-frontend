@@ -1,22 +1,23 @@
 <template>
   <v-container>
     <v-responsive>
-      <v-card title="출고 상태">
-        <template v-slot:text>
-          <v-text-field
-            v-model="search"
-            label="Search"
-            prepend-inner-icon="mdi-magnify"
-            variant="outlined"
-            hide-details
-            single-line
-          ></v-text-field>
-        </template>
-
+      <v-card>
+        <v-card-title class="title">출고 상태</v-card-title>
+        <v-text-field
+          class="field"
+          v-model="search"
+          label="Search"
+          prepend-inner-icon="mdi-magnify"
+          variant="outlined"
+          hide-details
+          single-line
+        ></v-text-field>
         <v-data-table
+          class="table"
           :items="product_list"
           :headers="product_header"
           :search="search"
+          outlined
         >
           <template v-slot:item.stock_order_processing="{ item }">
             <span>{{
@@ -33,6 +34,7 @@
 import { ref } from "vue";
 import axios from "axios";
 import { useDate } from "vuetify";
+import "../components/table.css";
 
 const date = useDate();
 const search = ref("");
@@ -109,30 +111,3 @@ async function getProducts() {
 
 getProducts();
 </script>
-
-<style scoped>
-.card {
-  background: #ffffff;
-}
-.title {
-  font-size: 36px;
-  font-weight: bold;
-  color: black;
-}
-.field {
-  margin-bottom: 20px;
-  margin-left: 20px;
-  margin-right: 20px;
-  color: black;
-}
-.table {
-  font-size: 18px;
-  background: #ffffff;
-  color: black;
-  font-weight: bolder;
-}
-.headerClasses {
-  font-size: 24px; /* 헤더 글씨 크기 설정 */
-  font-weight: bold; /* 헤더 글씨 두껍게 설정 */
-}
-</style>

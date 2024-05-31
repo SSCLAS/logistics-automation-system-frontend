@@ -57,6 +57,7 @@
 import { ref } from "vue";
 import axios from "axios";
 import { useDate } from "vuetify";
+import "../components/table.css";
 
 const date = useDate();
 const search = ref("");
@@ -102,22 +103,3 @@ async function update(product_id, status) {
 
 getProducts();
 </script>
-
-<style scoped>
-.card {
-  background: #ffffff;
-}
-.title {
-  color: black;
-}
-.field {
-  margin-bottom: 20px;
-  margin-left: 20px;
-  margin-right: 20px;
-  color: black;
-}
-.table {
-  background: #ffffff;
-  color: black;
-}
-</style>
