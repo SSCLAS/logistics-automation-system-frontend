@@ -11,9 +11,14 @@
         <v-card class="mx-auto" max-width="344">
           <v-img height="200" :src="robot.robot_image" cover></v-img>
 
-          <v-card-title> 로봇명: {{ robot.robot_name }} </v-card-title>
-
-          <v-card-subtitle> 활성화: {{ robot.robot_status }} </v-card-subtitle>
+          <v-card-title>
+            <strong>로봇명</strong>
+            <div>{{ robot.robot_name }}</div>
+          </v-card-title>
+          <v-card-text>
+            <strong>로봇 활성 상태</strong>
+            <div>{{ robot.robot_status }}</div>
+          </v-card-text>
 
           <v-card-actions>
             <v-spacer></v-spacer>
